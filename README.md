@@ -1,15 +1,22 @@
 # Projeto Vendas - API e Frontend
 
-Esta aplicação é um sistema de vendas simples, desenvolvido em PHP para o backend e JavaScript para o frontend.
-Permite cadastrar Clientes, Produtos, Formas de Pagamento e registrar Vendas. O sistema atende aos requisitos obrigatórios de CRUD
-para todos os módulos e listagem de vendas com filtro por cliente.
+Sistema de vendas simples desenvolvido em PHP (backend) e JavaScript (frontend),
+utilizando PostgreSQL como banco de dados.
+
+A aplicação permite:
+
+- Cadastro de Clientes, Produtos e Formas de Pagamento
+- Registro e visualização de Vendas
+- Controle de estoque automático
+- Autenticação de usuários
 
 ## Pré-requisitos
 
-PHP 8+
-Servidor web (Apache[XAMPP])
-Banco de dados PostgreSQL
-Extensão PDO habilitada
+- PHP 8+
+- Servidor web (Apache – XAMPP recomendado)
+- PostgreSQL
+- Extensão PDO habilitada
+- Extensão pgsql habilitada no php.ini
 
 ## Instalação
 
@@ -183,10 +190,17 @@ INSERT INTO tab_usuarios (ds_usuario, ds_password, id_cliente) VALUES ('admin', 
 
 > Listar vendas: GET /api/index.php/vendas
 > Retorna todas as vendas. Pode filtrar por cliente com ds_cliente.
+> Retorna os dados para visualização total da venda no formulário.
 > Cadastrar venda: POST /api/index.php/vendas
 > Campos: id_cliente, forma_pagamento, produtos (array com id_produto, qtd, valorVenda).
 > Excluir venda: DELETE /api/index.php/vendas
 > Enviar id_venda no corpo da requisição.
+
+## Observações sobre Vendas
+
+- Vendas **não podem ser editadas**, apenas visualizadas ou excluídas.
+- Essa decisão evita inconsistências no controle de estoque.
+- Caso uma venda seja excluída, o estoque dos produtos pode ser ajustado conforme regra definida no backend.
 
 ### Explicação
 
