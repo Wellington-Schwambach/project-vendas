@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="assets/styleIndex.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Project Zucchetti</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container-login" style="background-image: url('img/bg-01.jpg');">
+            <div class="container">
+                <div class="col-right">
+                    <div class="login-form">
+                        <h2>Projeto Vendas Zucchetti</h2>
+                        <form id="loginForm">
+                            <p>
+                                <input id="txtUsuario" type="text" placeholder="Usuário" required />
+                            </p>
+                            <p class="password-field">
+                                <input type="password" id="txtPassaword" placeholder="Senha" required />
+                                <i class="fa-solid fa-eye-slash toggle-password" onclick="togglePassword()"></i>
+                            </p>
+                            <p>
+                                <button type="submit" class="btn-login">Acessar</button>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    function togglePassword() {
+        const password = document.getElementById("txtPassaword");
+        const icon = document.querySelector(".toggle-password");
+
+        if (password.type === "password") {
+            password.type = "text";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        } else {
+            password.type = "password";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        }
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const usuario = document.getElementById("txtUsuario").value;
+        const senha = document.getElementById("txtPassaword").value;
+
+        const response = await fetch("api/index.php/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                usuario: usuario,
+                senha: senha
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            window.location.href = "dashboard/index.php";
+        } else if (!result.success) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro no login',
+                text: result.message
+            }).then(() => {
+                document.getElementById("txtPassaword").value = '';
+                document.getElementById("txtPassaword").focus();
+            });
+        }
+    });
+
+</script>
+
+</html>
