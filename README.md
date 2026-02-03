@@ -138,7 +138,7 @@ INSERT INTO tab_usuarios (ds_usuario, ds_password, id_cliente) VALUES ('admin', 
 
 ## Acesse o frontend
 
-<http://localhost/project_vendas/index.html>
+<http://localhost/project-vendas/index.html>
 
 ### Endpoints da API
 

@@ -21,8 +21,7 @@ $controllers = [
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri    = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$route  = str_replace('/project_vendas/api/index.php', '', $uri);
-
+$route  = str_replace('/project-vendas/api/index.php', '', $uri);
 
 $routes = [
 

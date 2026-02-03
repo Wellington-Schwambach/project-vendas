@@ -45,6 +45,12 @@ if (!isset($_SESSION["usuario"])) {
             <a href="#" class="nav-item" data-module="vendas">
                 <i class="fas fa-comment-dots"></i><span>Vendas</span>
             </a>
+
+
+
+            <a href="../logout.php">
+                <i class="fa-solid fa-right-from-bracket"></i><span>Sair do Sistema</span>
+            </a>
         </div>
     </div>
 

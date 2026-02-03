@@ -17,6 +17,12 @@
                 <!-- Conteúdo: Cadastro -->
                 <div class="tab-content active" id="cadastroVenda">
                     <form id="formVenda">
+                        <input type="hidden" id="idVenda">
+                        <div class="form-actions">
+                            <button type="button" id="btnFecharVisualizacao" style="display: none" class="btn-primary" onClick="limparVenda()">
+                                Nova Venda
+                            </button>
+                        </div>
                         <div class="form-grid">
                             <!-- CLIENTE -->
                             <div class="form-group select-group">

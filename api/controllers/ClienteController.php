@@ -117,6 +117,8 @@ class ClienteController
 
     public function index()
     {
+        $this->checkAuth();
+
         $nome = $_GET['nome'] ?? '';
         $cpf  = $_GET['cpf'] ?? '';
 
@@ -156,6 +158,8 @@ class ClienteController
 
     public function delete(): void
     {
+        $this->checkAuth();
+
         $data = json_decode(file_get_contents("php://input"), true);
         $id_cliente = intval($data['id_cliente'] ?? 0);
 
@@ -179,6 +183,8 @@ class ClienteController
 
     public function show(): void
     {
+        $this->checkAuth();
+        
         $id_cliente = intval($_GET['id_cliente'] ?? 0);
 
         try {

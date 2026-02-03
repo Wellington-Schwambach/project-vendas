@@ -26,7 +26,7 @@
         const method = idProduto ? "PUT" : "POST";
 
         try {
-            const response = await fetch("/project_vendas/api/index.php/produtos", {
+            const response = await fetch("/project-vendas/api/index.php/produtos", {
                 method,
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },
@@ -44,6 +44,7 @@
                 }).then(() => {
                     resetFormProdutos();
                     carregarProdutos('')
+                    idProduto = null;
                 });
             } else {
                 Swal.fire({
@@ -71,7 +72,7 @@
 
     async function carregarProdutos(nome = '') {
         try {
-            const res = await fetch('/project_vendas/api/index.php/produtos?nomeProduto=' + nome);
+            const res = await fetch('/project-vendas/api/index.php/produtos?nomeProduto=' + nome);
             const produto = await res.json();
 
             tbodyProdutos.innerHTML = '';
@@ -131,7 +132,7 @@
             document.getElementById("cadastroProd").classList.add("active");
 
 
-            const res = await fetch(`/project_vendas/api/index.php/produtos?id_produto=${id}`, {
+            const res = await fetch(`/project-vendas/api/index.php/produtos?id_produto=${id}`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -169,7 +170,7 @@
                 // Função async interna
                 (async () => {
                     try {
-                        const res = await fetch(`/project_vendas/api/index.php/produtos`, {
+                        const res = await fetch(`/project-vendas/api/index.php/produtos`, {
                             method: 'DELETE',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ id_produto: id })

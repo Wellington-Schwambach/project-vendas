@@ -25,7 +25,7 @@
         const method = idPagamento ? "PUT" : "POST";
 
         try {
-            const response = await fetch("/project_vendas/api/index.php/pagamentos", {
+            const response = await fetch("/project-vendas/api/index.php/pagamentos", {
                 method,
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },
@@ -43,6 +43,7 @@
                 }).then(() => {
                     resetFormPagamentos();
                     carregarPagamentos('')
+                    idPagamento = null;
                 });
             } else {
                 Swal.fire({
@@ -70,7 +71,7 @@
 
     async function carregarPagamentos(nome = '') {
         try {
-            const res = await fetch('/project_vendas/api/index.php/pagamentos?formaPagamento=' + nome);
+            const res = await fetch('/project-vendas/api/index.php/pagamentos?formaPagamento=' + nome);
             const pagamento = await res.json();
 
             tbodyPagamentos.innerHTML = '';
@@ -129,7 +130,7 @@
             document.getElementById("cadastroPagamento").classList.add("active");
 
 
-            const res = await fetch(`/project_vendas/api/index.php/pagamentos?id_pagamento=${id}`, {
+            const res = await fetch(`/project-vendas/api/index.php/pagamentos?id_pagamento=${id}`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -166,7 +167,7 @@
                 // Função async interna
                 (async () => {
                     try {
-                        const res = await fetch(`/project_vendas/api/index.php/pagamentos`, {
+                        const res = await fetch(`/project-vendas/api/index.php/pagamentos`, {
                             method: 'DELETE',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ id_pagamento: id })
