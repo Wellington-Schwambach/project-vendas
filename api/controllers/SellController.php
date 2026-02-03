@@ -121,8 +121,45 @@ class SellController
     {
         $this->checkAuth();
         $ds_cliente = trim($_GET['ds_cliente'] ?? '');
+        $id_venda   = $_GET['id_venda'] ?? null;
 
         try {
+            /* Edição */
+            if ($id_venda) {
+                $stmt = $this->db->prepare("SELECT
+                                                v.id_venda,
+                                                v.id_cliente,
+                                                v.id_pagamento
+                                            FROM tab_vendas v
+                                                WHERE v.id_venda = :id_venda");
+                $stmt->execute([':id_venda' => $id_venda]);
+                $venda = $stmt->fetch(PDO::FETCH_OBJ);
+                if (!$venda) {
+                    $this->response(false, 'Venda não encontrada');
+                    return;
+                }
+
+                /* Produtos da venda */
+                $stmt = $this->db->prepare("SELECT
+                                                pv.id_produto,
+                                                p.ds_produto,
+                                                pv.nr_qtd_venda,
+                                                p.nr_valor AS nr_valor_unitario
+                                            FROM tab_produtos_venda pv
+                                                INNER JOIN tab_produtos p ON p.id_produto = pv.id_produto
+                                            WHERE pv.id_venda = :id_venda");
+                $stmt->execute([':id_venda' => $id_venda]);
+                $produtos = $stmt->fetchAll(PDO::FETCH_OBJ);
+                echo json_encode([
+                    'id_venda'     => $venda->id_venda,
+                    'id_cliente'   => $venda->id_cliente,
+                    'id_pagamento' => $venda->id_pagamento,
+                    'produtos'     => $produtos
+                ]);
+                return;
+            }
+
+            /* Listagem de Dados */
             $selectVendas = "SELECT 
                                 v.id_venda,
                                 c.ds_nome,
@@ -142,13 +179,14 @@ class SellController
 
             $stmt = $this->db->prepare($selectVendas);
             $stmt->execute($params);
-            $venda = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $vendas = $stmt->fetchAll(PDO::FETCH_OBJ);
 
-            if (empty($venda)) {
+            if (empty($vendas)) {
                 $this->response(false, "Nenhuma venda encontrada");
+                return;
             }
 
-            echo json_encode($venda);
+            echo json_encode($vendas);
         } catch (PDOException $e) {
             $this->response(false, "Erro ao buscar vendas", [
                 "error" => $e->getMessage()

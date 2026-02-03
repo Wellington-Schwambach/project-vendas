@@ -1,28 +1,27 @@
 <div class="dashboard-main">
-    <!-- Transfer Cards -->
     <div class="transfer-cards">
         <div class="transfer-card">
             <div class="card-icon">
                 <i class="fas fa-credit-card"></i>
             </div>
             <p class="card-title">Vendas Mensais</p>
-            <h2 class="card-amount">$1,875</h2>
+            <h2 class="card-amount"></h2>
         </div>
 
         <div class="transfer-card">
             <div class="card-icon">
-                <i class="fas fa-exchange-alt"></i>
+                <i class="fas fa-user-circle"></i>
             </div>
-            <p class="card-title">External Transfers</p>
-            <h2 class="card-amount">$263</h2>
+            <p class="card-title">Clientes Cadastrados</p>
+            <h2 class="card-amount"></h2>
         </div>
 
         <div class="transfer-card">
             <div class="card-icon">
-                <i class="fas fa-university"></i>
+                <i class="fas fa-boxes"></i>
             </div>
-            <p class="card-title">Domestic Transfers</p>
-            <h2 class="card-amount">$394</h2>
+            <p class="card-title">Produtos em Estoque</p>
+            <h2 class="card-amount"></h2>
         </div>
     </div>
 </div>

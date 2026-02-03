@@ -31,7 +31,7 @@
         const method = idCliente ? "PUT" : "POST";
 
         try {
-            const response = await fetch("/project_vendas/api/index.php/clientes", {
+            const response = await fetch("/project-vendas/api/index.php/clientes", {
                 method,
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },
@@ -48,7 +48,8 @@
                     confirmButtonColor: "#4270F4"
                 }).then(() => {
                     resetFormCliente();
-                    carregarClientes('', '')
+                    carregarClientes('', '');
+                    idCliente = null;
                 });
             } else {
                 Swal.fire({
@@ -150,7 +151,7 @@
 
     async function carregarClientes(nome = '', cpf = '') {
         try {
-            const res = await fetch('/project_vendas/api/index.php/clientes?nome=' + nome + '&cpf=' + cpf);
+            const res = await fetch('/project-vendas/api/index.php/clientes?nome=' + nome + '&cpf=' + cpf);
             const cliente = await res.json();
 
             tbodyClientes.innerHTML = '';
@@ -211,7 +212,7 @@
             document.getElementById("cadastroCli").classList.add("active");
 
 
-            const res = await fetch(`/project_vendas/api/index.php/clientes?id_cliente=${id}`, {
+            const res = await fetch(`/project-vendas/api/index.php/clientes?id_cliente=${id}`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -255,7 +256,7 @@
                 // Função async interna
                 (async () => {
                     try {
-                        const res = await fetch(`/project_vendas/api/index.php/clientes`, {
+                        const res = await fetch(`/project-vendas/api/index.php/clientes`, {
                             method: 'DELETE',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ id_cliente: id })

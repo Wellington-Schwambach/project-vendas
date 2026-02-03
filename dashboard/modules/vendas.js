@@ -15,7 +15,7 @@
     /* Carrega dados do select de Clientes */
     async function carregarClientes() {
         try {
-            const res = await fetch('/project_vendas/api/index.php/clientes', {
+            const res = await fetch('/project-vendas/api/index.php/clientes', {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -35,7 +35,7 @@
     /* Carrega dados do select de Produtos */
     async function carregarProdutos() {
         try {
-            const res = await fetch('/project_vendas/api/index.php/produtos', {
+            const res = await fetch('/project-vendas/api/index.php/produtos', {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -55,7 +55,7 @@
     /* Carrega dados do select de Pagamentos */
     async function carregarPagamentos() {
         try {
-            const res = await fetch('/project_vendas/api/index.php/pagamentos', {
+            const res = await fetch('/project-vendas/api/index.php/pagamentos', {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -103,7 +103,7 @@
 
         try {
             const res = await fetch(
-                `/project_vendas/api/index.php/produtos?id_produto=${select.value}`,
+                `/project-vendas/api/index.php/produtos?id_produto=${select.value}`,
                 {
                     method: 'GET',
                     credentials: 'include'
@@ -161,29 +161,40 @@
         produtosVenda.forEach((p, i) => {
             const subtotal = p.valor * p.qtd;
             totalVenda += subtotal;
-            tbodyTabela.insertAdjacentHTML('beforeend', `
-                <tr>
-                    <td>${p.nome}</td>
-                    <td>${p.qtd} Un.</td>
-                    <td>R$ ${(p.valor).toFixed(2)}</td>
-                    <td>R$ ${(subtotal).toFixed(2)}</td>
+            const colunaExcluir = !idVenda
+                ? `
                     <td>
                         <button class="btn-excluir" data-index="${i}">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
-                </tr>
-            `);
-            document.getElementById('totalVenda').innerHTML = `R$ ${totalVenda.toFixed(2)}`;
+                `
+                : `<td></td>`;
+
+            tbodyTabela.insertAdjacentHTML('beforeend', `
+            <tr>
+                <td>${p.nome}</td>
+                <td>${p.qtd} Un.</td>
+                <td>R$ ${p.valor.toFixed(2)}</td>
+                <td>R$ ${subtotal.toFixed(2)}</td>
+                ${colunaExcluir}
+            </tr>
+        `);
         });
-        /* Remover Item da tabela */
-        tbodyTabela.addEventListener('click', e => {
-            if (e.target.closest('.btn-excluir')) {
-                const index = e.target.closest('.btn-excluir').dataset.index;
-                removerProduto(index);
-            }
-        });
+        document.getElementById('totalVenda').innerHTML =
+            `R$ ${totalVenda.toFixed(2)}`;
     }
+
+    /* Remover Item da tabela */
+    document
+        .querySelector('#tabelaProdutosVenda tbody')
+        .addEventListener('click', e => {
+            const btn = e.target.closest('.btn-excluir');
+            if (!btn) return;
+
+            const index = Number(btn.dataset.index);
+            removerProduto(index);
+        });
 
     /* Salvar venda */
     document.getElementById('btnSalvarVenda').addEventListener('click', salvarVenda);
@@ -240,7 +251,7 @@
                 }
             });
 
-            const response = await fetch('/project_vendas/api/index.php/vendas', {
+            const response = await fetch('/project-vendas/api/index.php/vendas', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
@@ -294,7 +305,7 @@
     async function carregarVendas(cliente = '') {
         try {
             const res = await fetch(
-                `/project_vendas/api/index.php/vendas?ds_cliente=${cliente}`,
+                `/project-vendas/api/index.php/vendas?ds_cliente=${cliente}`,
                 { credentials: 'include' }
             );
 
@@ -306,7 +317,7 @@
             if (vendas.length === 0 || !vendas[0].id_venda) {
                 tbodyVendas.innerHTML = `
                 <tr>
-                    <td colspan="5" style="text-align:center">
+                    <td colspan="6" style="text-align:center">
                         Nenhuma venda encontrada
                     </td>
                 </tr>
@@ -322,7 +333,7 @@
                                 <td style="text-align:center">${data.ds_pagamento}</td>
                                 <td style="text-align:center">${formatReal(data.nr_totalvenda)}</td>
                                 <td>
-                                    <button class="btn-detalhes" title="Detalhes" data-id="${data.id_venda}">
+                                    <button class="btn-editar" title="Editar" data-id="${data.id_venda}">
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
                                     <button class="btn-excluir" title="Excluir" data-id="${data.id_venda}">
@@ -336,7 +347,7 @@
             console.error(err);
             tbodyVendas.innerHTML = `
                                     <tr>
-                                        <td colspan="5" style="color:red;text-align:center">
+                                        <td colspan="6" style="color:red;text-align:center">
                                             Erro ao carregar vendas
                                         </td>
                                     </tr>
@@ -346,6 +357,55 @@
     btnConsultarVendas.addEventListener('click', () => {
         carregarVendas(inputClienteVendas.value.trim());
     });
+
+
+    document.getElementById('tbodyVendas').addEventListener('click', async (e) => {
+        const btnEditar = e.target.closest('.btn-editar');
+        if (!btnEditar) return;
+
+        const idVenda = btnEditar.dataset.id;
+        editarVenda(idVenda);
+    });
+    async function editarVenda(idVenda) {
+        try {
+            const res = await fetch(
+                `/project-vendas/api/index.php/vendas?id_venda=${idVenda}`,
+                {
+                    method: 'GET',
+                    credentials: 'include'
+                }
+            );
+
+            if (!res.ok) throw new Error('Erro ao buscar venda');
+            const venda = await res.json();
+
+            document.querySelector('[data-tab="cadastroVenda"]').click();
+            document.getElementById('idVenda').value = venda.id_venda;
+            document.getElementById('txtSelectCliente').value = venda.id_cliente;
+            document.getElementById('txtSelectPagamento').value = venda.id_pagamento;
+
+            // Produtos
+            produtosVenda = venda.produtos.map(p => ({
+                id_produto: p.id_produto,
+                nome: p.ds_produto,
+                valor: Number(p.nr_valor_unitario),
+                qtd: Number(p.nr_qtd_venda)
+            }));
+
+            renderTabela();
+            document.getElementById('btnSalvarVenda').style = 'display: none';
+            document.getElementById('btnFecharVisualizacao').style = '';
+            Swal.fire({
+                icon: 'info',
+                title: 'Venda',
+                text: `Visualizando a venda #${venda.id_venda}`
+            });
+
+        } catch (err) {
+            console.error(err);
+            Swal.fire('Erro', 'Erro ao carregar venda', 'error');
+        }
+    }
 
     document.getElementById('tbodyVendas').addEventListener('click', async (e) => {
         const btn = e.target.closest('.btn-excluir');
@@ -365,7 +425,7 @@
             if (!result.isConfirmed) return;
 
             try {
-                const res = await fetch('/project_vendas/api/index.php/vendas', {
+                const res = await fetch('/project-vendas/api/index.php/vendas', {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
@@ -387,7 +447,7 @@
                 carregarClientes();
                 carregarProdutos();
                 carregarPagamentos();
-                
+                renderTabela();
                 // Remove a linha da tabela
                 btn.closest('tr').remove();
 
@@ -397,6 +457,35 @@
             }
         });
     });
+
+    window.limparVenda = function limparVenda() {
+        // Limpar campos após visualização das venda
+        document.getElementById('idVenda').value = '';
+        produtosVenda = [];
+        document.getElementById('totalVenda').innerHTML = 'R$ 0,00';
+
+        const tbody = document
+            .getElementById('tabelaProdutosVenda')
+            .querySelector('tbody');
+
+        tbody.innerHTML = '';
+
+        const form = document.getElementById('formVenda');
+        if (form) {
+            form.reset();
+        }
+
+        carregarVendas();
+        carregarClientes();
+        carregarProdutos();
+        carregarPagamentos();
+
+        document.getElementById('btnSalvarVenda').style = '';
+        document.getElementById('btnFecharVisualizacao').style = 'display: none';
+
+        renderTabela();
+    }
+
 
     carregarVendas();
     carregarClientes();
