@@ -1,0 +1,239 @@
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full {
+  grid-column: span 2;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  background-color: var(--gray-light);
+  border: 1px solid var(--gray-medium);
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: 15px;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.form-group input::placeholder {
+  color: var(--gray-dark);
+}
+
+.form-group input:focus {
+  outline: none;
+  background-color: var(--white);
+  border-color: var(--primary-color);
+  box-shadow: 0 5px 15px rgba(66, 112, 244, 0.15);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4270f4, #6a85f1);
+  color: var(--white);
+  border: none;
+  border-radius: 30px;
+  padding: 14px 35px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(66, 112, 244, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(66, 112, 244, 0.4);
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full {
+    grid-column: span 1;
+  }
+
+  .form-actions {
+    justify-content: center;
+  }
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.tab-btn {
+  padding: 10px 22px;
+  border-radius: 20px;
+  border: none;
+  background: var(--gray-medium);
+  color: var(--text-secondary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  background: var(--primary-light);
+  color: var(--primary-color);
+}
+
+.tab-btn.active {
+  background: var(--primary-color);
+  color: #fff;
+  box-shadow: 0 5px 12px rgba(66, 112, 244, 0.3);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* tabela */
+.table-lista {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-lista th,
+.table-lista td {
+  padding: 14px;
+  border-bottom: 1px solid var(--gray-medium);
+  text-align: left;
+}
+
+.table-lista th {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.table-lista tr:hover {
+  background-color: var(--primary-light);
+}
+
+/* Botões dentro da tabela */
+table button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+  margin: 0 5px;
+  padding: 5px;
+  transition: transform 0.2s, color 0.2s;
+}
+
+table button:hover {
+  transform: scale(1.2);
+}
+
+.btn-editar i {
+  color: #1E90FF;
+}
+
+.btn-excluir i {
+  color: #FF4500;
+}
+
+/* Base do select */
+.select-group select {
+  width: 100%;
+  background-color: var(--gray-light);
+  border: 1px solid var(--gray-medium);
+  border-radius: 14px;
+  padding: 14px 44px 14px 18px;
+  font-size: 15px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Hover */
+.select-group select:hover {
+  background-color: var(--white);
+}
+
+/* Focus */
+.select-group select:focus {
+  outline: none;
+  background-color: var(--white);
+  border-color: var(--primary-color);
+  box-shadow: 0 6px 16px rgba(66, 112, 244, 0.18);
+}
+
+/* Container da seta */
+.select-group {
+  position: relative;
+}
+
+/* Seta SOMENTE no select */
+.select-group::after {
+  content: "";
+  position: absolute;
+  right: 18px;
+  top: 55%;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--gray-dark);
+  border-bottom: 2px solid var(--gray-dark);
+  transform: translateY(-50%) rotate(45deg);
+  pointer-events: none;
+}
+
+/* Disabled */
+.select-group select:disabled {
+  background-color: var(--gray-medium);
+  cursor: not-allowed;
+  color: var(--gray-dark);
+}
+
+.form-group select.filled {
+  background-color: #fff;
+}
+
+.grid-50 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.grid-50 input,
+.grid-50 button {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .grid-50 {
+    grid-template-columns: 1fr;
+  }
+}
