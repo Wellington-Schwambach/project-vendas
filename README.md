@@ -27,17 +27,27 @@ cd projeto-vendas
 
 ## Configure o banco de dados em api/config/database.php
 
-"pgsql:host=localhost;port=5432;dbname=exemplo123", // Aqui deve ser inserido o nome do seu banco de dados
+"pgsql:host=localhost;port=5432;dbname=project_zucchetti", // Aqui deve ser inserido o nome do seu banco de dados
 "postgres",
 "exemplo123", // Aqui deve ser inserida a senha do seu banco de dados
 
 ## Importe o schema do banco de dados (exemplo PostgreSQL)
 
-## clientes
+## Create database
+
+CREATE DATABASE project_zucchetti
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LOCALE_PROVIDER = 'libc'
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+
+-- clientes
 
 CREATE TABLE IF NOT EXISTS public.tab_clientes
 (
-    id_cliente serial NOT NULL DEFAULT,
+    id_cliente serial NOT NULL,
     ds_nome character varying(200) COLLATE pg_catalog."default" NOT NULL,
     nr_cpf character varying(14) COLLATE pg_catalog."default" NOT NULL,
     ds_endereco character varying(200) COLLATE pg_catalog."default",
@@ -55,11 +65,11 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.tab_clientes
     OWNER to postgres;
 
-## produtos
+-- produtos
 
 CREATE TABLE IF NOT EXISTS public.tab_produtos
 (
-    id_produto serial NOT NULL DEFAULT,
+    id_produto serial NOT NULL,
     ds_produto character varying(200) COLLATE pg_catalog."default" NOT NULL,
     nr_quantidade integer NOT NULL,
     nr_valor numeric(14,2) NOT NULL,
@@ -71,11 +81,11 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.tab_produtos
     OWNER to postgres;
 
-## pagamentos
+-- pagamentos
 
     CREATE TABLE IF NOT EXISTS public.tab_pagamentos
     (
-        id_pagamento serial NOT NULL DEFAULT,
+        id_pagamento serial NOT NULL,
         ds_pagamento character varying(40) COLLATE pg_catalog."default",
         nr_parcelas integer,
         CONSTRAINT tab_pagamentos_pkey PRIMARY KEY (id_pagamento)
@@ -86,11 +96,11 @@ ALTER TABLE IF EXISTS public.tab_produtos
     ALTER TABLE IF EXISTS public.tab_pagamentos
         OWNER to postgres;
 
-## vendas
+-- vendas
 
 CREATE TABLE IF NOT EXISTS public.tab_vendas
 (
-    id_venda serial NOT NULL DEFAULT,
+    id_venda serial NOT NULL,
     id_pagamento integer NOT NULL,
     nr_totalvenda numeric(14,2) NOT NULL,
     id_cliente integer NOT NULL,
@@ -104,11 +114,11 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.tab_vendas
     OWNER to postgres;
 
-## produtos de cada venda
+-- produtos de cada venda
 
 CREATE TABLE IF NOT EXISTS public.tab_produtos_venda
 (
-    id_produtos_venda serial NOT NULL DEFAULT,
+    id_produtos_venda serial NOT NULL,
     id_venda integer,
     id_produto integer,
     nr_qtd_venda integer,
@@ -120,11 +130,11 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.tab_produtos_venda
     OWNER to postgres;
 
-## usuários
+-- usuários
 
 CREATE TABLE IF NOT EXISTS public.tab_usuarios
 (
-    id_user serial NOT NULL DEFAULT,
+    id_user serial NOT NULL,
     ds_password character varying(255) COLLATE pg_catalog."default" NOT NULL,
     id_cliente integer NOT NULL,
     ds_usuario character varying(60) COLLATE pg_catalog."default" NOT NULL,
@@ -142,6 +152,18 @@ Usuário: admin
 Senha: 123456
 
 INSERT INTO tab_usuarios (ds_usuario, ds_password, id_cliente) VALUES ('admin', '$2y$10$kpLsC7/0XWj7Bdv3V3Df3e9hOpkPytIoduxxKSeyJ6yvEcedrNNfG', 1)
+
+## Formas de pagamento caso necessário
+
+INSERT INTO public.tab_pagamentos (ds_pagamento, nr_parcelas) VALUES
+(UPPER('Crédito à vista'), 1),
+(UPPER('Crédito 2x'), 2),
+(UPPER('Crédito 3x'), 3),
+(UPPER('Crédito 6x'), 6),
+(UPPER('Débito'), 1),
+(UPPER('PIX'), 1),
+(UPPER('Dinheiro'), 1),
+(UPPER('Boleto'), 1);
 
 ## Acesse o frontend
 
