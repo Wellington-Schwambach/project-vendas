@@ -223,6 +223,7 @@ INSERT INTO public.tab_pagamentos (ds_pagamento, nr_parcelas) VALUES
 - Vendas **não podem ser editadas**, apenas visualizadas ou excluídas.
 - Essa decisão evita inconsistências no controle de estoque.
 - Caso uma venda seja excluída, o estoque dos produtos pode ser ajustado conforme regra definida no backend.
+- Embora o enunciado solicite CRUD completo, optou-se por não permitir edição de vendas, pois em sistemas reais a alteração de vendas impacta diretamente o estoque, sendo comum o uso de cancelamento ou estorno em vez de edição direta.
 
 ### Explicação
 
